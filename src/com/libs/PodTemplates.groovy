@@ -3,9 +3,7 @@ package com.libs
 def Create(def containers) {
     def containerTemplates = []
     for (def container:containers ) {
-        def containerTemplate = new ContainerTemplate()
-        containerTemplate.name              = container.name            ?: ''
-        containerTemplate.image             = container.image           ?: ''
+        def containerTemplate = new ContainerTemplate(container.name ?: '', container.image ?: '')
         containerTemplate.command           = container.command         ?: 'cat'
         containerTemplate.args              = container.args            ?: ''
         containerTemplate.ttyEnabled        = container.ttyEnabled      ?: true
