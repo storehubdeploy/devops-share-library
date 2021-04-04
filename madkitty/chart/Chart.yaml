@@ -1,6 +1,0 @@
-apiVersion: v2
-name: madkitty-api
-appVersion: latest
-description: Tiny Configuration Center
-version: 1
-type: application
