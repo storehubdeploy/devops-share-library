@@ -2,7 +2,7 @@ package com.libs
 
 def Create(containers) {
     def containerTemplates = []
-    containers.each { container ->
+    for (def container:containers ) {
         def containerTemplate = new ContainerTemplate()
         containerTemplate.name              = container.name            ?: ''
         containerTemplate.image             = container.image           ?: ''

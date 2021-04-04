@@ -6,13 +6,10 @@ class Container {
    String image
 }
  
-def call(timeoutMinutes = 60 ) {
+def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
     def label = "k8sagent-${UUID.randomUUID().toString()}"
 
-    def xxxxx = []
-    xxxxx.add(new Container(name: "test1",image:"docker:stable-dind")
-    xxxxx.add(new Container(name: "test2",image:"dtzar/helm-kubectl:2.12.0")
-    def containerTemplates = ContainerTemplate.Create(xxxxx)
+    def containerTemplates = ContainerTemplate.Create(BUILD_SLAVE)
 
     podTemplate(label: label, containers: containerTemplates, volumes: [emptyDirVolume(mountPath: '/home/jenkins', memory: true)], imagePullSecrets: []) {
         node(label) {
