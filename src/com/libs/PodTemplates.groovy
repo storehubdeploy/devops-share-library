@@ -1,7 +1,7 @@
 package com.libs
 
 def Create(def containers) {
-    def containerTemplates = []
+    def templates = []
     for (def i:containers ) {
         i.name            = i.name            ?: ''
         i.image           = i.image           ?: ''
@@ -12,13 +12,13 @@ def Create(def containers) {
         i.alwaysPullImage = i.alwaysPullImage ?: false
 
         // Add containerTemplate to list, and then return
-        containerTemplates.add(containerTemplate(   name:            i.name, 
-                                                    image:           i.image, 
-                                                    command:         i.command,
-                                                    args:            i.args,
-                                                    ttyEnabled:      i.ttyEnabled, 
-                                                    privileged:      i.privileged,
-                                                    alwaysPullImage: i.alwaysPullImage))
+        templates.add(containerTemplate(name:            i.name, 
+                                        image:           i.image, 
+                                        command:         i.command,
+                                        args:            i.args,
+                                        ttyEnabled:      i.ttyEnabled, 
+                                        privileged:      i.privileged,
+                                        alwaysPullImage: i.alwaysPullImage))
     }
-    return containerTemplates
+    return templates
 }
