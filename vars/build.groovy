@@ -1,11 +1,5 @@
 import com.libs.ContainerTemplate
 
-@Simple 
-class Container {
-   String name
-   String image
-}
- 
 def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
     def label = "k8sagent-${UUID.randomUUID().toString()}"
 
