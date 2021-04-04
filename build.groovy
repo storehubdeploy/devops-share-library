@@ -10,14 +10,6 @@ def call(timeoutMinutes = 60 ) {
         node(label) {
             timeout(time: timeoutMinutes, unit: 'MINUTES') {
                 echo "the pipeline is executed in a k8s agent " + label + "!!!"
-                stages {
-                    stage('Main') {
-                        steps {
-                            echo 'Hello World'
-                            echo "${BUILD_URL}/consoleText"
-                        }
-                    }
-                }
             }
 
         }
