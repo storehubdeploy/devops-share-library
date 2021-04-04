@@ -1,11 +1,10 @@
 import com.libs.ContainerTemplate
 
-mycontainerTemplate = new ContainerTemplate()
-
 def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
     def label = "k8sagent-${UUID.randomUUID().toString()}"
 
-    def containerTemplates = mycontainerTemplate.Create(BUILD_SLAVE)
+    def ContainerTemplate = new ContainerTemplate()
+    def containerTemplates = ContainerTemplate.Create(BUILD_SLAVE)
 
     podTemplate(label: label, containers: containerTemplates, volumes: [emptyDirVolume(mountPath: '/home/jenkins', memory: true)], imagePullSecrets: []) {
         node(label) {
@@ -16,3 +15,4 @@ def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
         }
     }
 }
+

@@ -1,6 +1,6 @@
 package com.libs
 
-def Create(containers) {
+def Create(def containers) {
     def containerTemplates = []
     for (def container:containers ) {
         def containerTemplate = new ContainerTemplate()
