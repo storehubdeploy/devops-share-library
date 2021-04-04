@@ -1,9 +1,9 @@
-import com.libs.ContainerTemplate
+import com.libs.PodTemplates
 
 def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
     def label = "k8sagent-${UUID.randomUUID().toString()}"
 
-    def containers = new ContainerTemplate().Create(BUILD_SLAVE)
+    def containers = new PodTemplates().Create(BUILD_SLAVE)
 
     podTemplate(cloud: 'kubernetes', label: label, containers: containers) {
     // podTemplate(cloud: 'kubernetes', label: label, containers: containers, volumes: [emptyDirVolume(mountPath: '/home/jenkins', memory: true)], imagePullSecrets: []) {
