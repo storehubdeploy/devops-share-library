@@ -3,14 +3,14 @@ package com.libs
 def Create(def containers) {
     def containerTemplates = []
     for (def i:containers ) {
-        def containerTemplate = new containerTemplate(container.name ?: '', container.image ?: '')
-        containerTemplate.name              = i.name            ?: ''
-        containerTemplate.image             = i.image           ?: ''
-        containerTemplate.command           = i.command         ?: 'cat'
-        containerTemplate.args              = i.args            ?: ''
-        containerTemplate.ttyEnabled        = i.ttyEnabled      ?: true
-        containerTemplate.privileged        = i.privileged      ?: true
-        containerTemplate.alwaysPullImage   = i.alwaysPullImage ?: false
+        def container = containerTemplate(container.name ?: '', container.image ?: '')
+        container.name              = i.name            ?: ''
+        container.image             = i.image           ?: ''
+        container.command           = i.command         ?: 'cat'
+        container.args              = i.args            ?: ''
+        container.ttyEnabled        = i.ttyEnabled      ?: true
+        container.privileged        = i.privileged      ?: true
+        container.alwaysPullImage   = i.alwaysPullImage ?: false
         // Add containerTemplate to list, and then return
         containerTemplates.add(containerTemplate)
 
