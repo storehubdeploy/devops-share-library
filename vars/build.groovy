@@ -10,7 +10,7 @@ def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
     podTemplate(label: label, containers: containers, 
                 volumes: [emptyDirVolume(mountPath: '/home/jenkins', memory: true)], 
                 imagePullSecrets: [], 
-                showRawYaml: false) 
+                showRawYaml: true) 
     {
         node(label) {
             timeout(time: timeoutMinutes, unit: 'MINUTES') {
