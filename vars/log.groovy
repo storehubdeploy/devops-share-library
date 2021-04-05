@@ -1,5 +1,3 @@
-package com.libs
-
 // Color
 def red(message) {
     echo "\033[1;31m${message} \033[0m"

@@ -1,12 +1,15 @@
-import com.libs.PodTemplates
-import com.libs.Log
+import com.libs.util.PodTemplates
+import com.libs.util.YamlParser
+import com.libs.exe.Git
 
-def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
+def call(GIT_BRANCH=null,  GIT_PROJECT=null, DOCKER_REPO=null, BUILD_SLAVE=null , buildYaml = "build.yaml", timeoutMinutes = 60 ) {
     // Init
-    // Logger
-    def log = new Log()
-
     def label = "k8sagent-${UUID.randomUUID().toString()}"
+    def buildEnv = ["GIT_BRANCH=${GIT_BRANCH}",
+                    "GIT_PROJECT=${GIT_PROJECT}",
+                    "DOCKER_REPO=${DOCKER_REPO}",
+                    "BUILD_NUMBER=${BUILD_NUMBER}"
+                   ]
     
     // Generate podTemplate
     // https://plugins.jenkins.io/kubernetes/
@@ -22,10 +25,60 @@ def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
             ansiColor('xterm') {
                 timeout(time: timeoutMinutes, unit: 'MINUTES') {
                     log.title("the pipeline is executed in a k8s agent " + label + "!!!")
-
+                    withEnv(buildEnv) {
+                        try {
+                            startPipeline(buildYaml)
+                        } catch (exp) {
+                            error "[ERROR] Program failed, please read logs..." + exp
+                        }
+                    }
                 }
             }
         }
     }
 }
 
+def startPipeline(def buildYaml = "build.yaml") {
+    def tasks = [:]
+    def git = new Git()
+
+    container('jnlp') {
+        log.title("startPipeline")
+
+        scmInfo = git.gitFetch()
+
+        tasks = getBuildTasks(buildYaml)
+
+        for (def task : tasks) {
+            def newParallel = new Parallel()
+            if(task.kind == "Docker") {
+                log.title("executing docker push")
+                newParallel.executeBuildParallel(task)
+            }
+
+        }
+
+    }
+}
+
+def getBuildTasks(def buildYaml = "build.yaml") {
+    try {
+        def namedTasks = [:]
+
+        def yamlText = readFile([file: buildYaml])
+        def tasks = YamlParser.loadYaml(yamlText, "tasks")
+
+        for (def task in tasks) {
+            if (task.name && namedTasks.containsKey(task.name)) {
+                namedTasks[task.name] << task
+            } else if (task.name) {
+                namedTasks[task.name] = [task]
+            }
+        }
+
+        return namedTasks
+    } catch (err) {
+        log.error "BuildYaml err:$err.message()"
+        throw e
+    }
+}

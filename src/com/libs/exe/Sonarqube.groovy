@@ -1,4 +1,4 @@
-package com.libs
+package com.libs.exe
 
 void analyzeWithSonarQubeAndWaitForQualityGoal() {
     withSonarQubeEnv('sonarqube') {
@@ -35,3 +35,7 @@ void analyzeWithSonarQubeAndWaitForQualityGoal() {
         }
     }
 }
+
+
+// https://github.com/nosinovacao/dotnet-sonar
+// https://github.com/SonarSource/sonar-scanner-cli-docker
