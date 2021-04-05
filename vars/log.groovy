@@ -31,5 +31,3 @@ def warn(message) {
 def error(message) {
     red "[ERROR] ${message}"
 }
-
-return this
