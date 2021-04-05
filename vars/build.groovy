@@ -65,7 +65,7 @@ def startPipeline(def buildYaml = "build.yaml") {
 def getBuildTasks(def buildYaml = "build.yaml") {
     try {
         def namedTasks = [:]
-        def m_dict = getPlaceholderDictionary()
+        def m_dict = [:]
 
         def buildTemplate = readFile([file: buildYaml])
         def yamlText = ReplaceWithRegex( buildTemplate, ~/\{\{(\w+)\}\}/, m_dict)
