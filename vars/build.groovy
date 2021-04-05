@@ -25,43 +25,42 @@ def call(GIT_BRANCH=null,  GIT_PROJECT=null, DOCKER_REPO=null, BUILD_SLAVE=null 
             // https://plugins.jenkins.io/ansicolor/
             ansiColor('xterm') {
                 timeout(time: timeoutMinutes, unit: 'MINUTES') {
-                    // log.title("the pipeline is executed in a k8s agent " + label + "!!!")
-                    echo "the pipeline is executed in a k8s agent " + label + "!!!"
-                    // withEnv(buildEnv) {
-                    //     try {
-                    //         startPipeline(buildYaml)
-                    //     } catch (exp) {
-                    //         error "[ERROR] Program failed, please read logs..." + exp
-                    //     }
-                    // }
+                    log.title("the pipeline is executed in a k8s agent " + label + "!!!")
+                    withEnv(buildEnv) {
+                        try {
+                            startPipeline(buildYaml)
+                        } catch (exp) {
+                            error "[ERROR] Program failed, please read logs..." + exp
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-// def startPipeline(def buildYaml = "build.yaml") {
-//     def tasks = [:]
-//     // def git = new Git()
+def startPipeline(def buildYaml = "build.yaml") {
+    def tasks = [:]
+    // def git = new Git()
 
-//     container('jnlp') {
-//         log.title("startPipeline")
+    container('jnlp') {
+        log.title("startPipeline")
 
-//         scmInfo = gitFetch()
+        scmInfo = gitFetch()
 
-//         // tasks = getBuildTasks(buildYaml)
+        // tasks = getBuildTasks(buildYaml)
 
-//         // for (def task : tasks) {
-//         //     def newParallel = new Parallel()
-//         //     if(task.kind == "Docker") {
-//         //         log.title("executing docker push")
-//         //         newParallel.executeBuildParallel(task)
-//         //     }
+        // for (def task : tasks) {
+        //     def newParallel = new Parallel()
+        //     if(task.kind == "Docker") {
+        //         log.title("executing docker push")
+        //         newParallel.executeBuildParallel(task)
+        //     }
 
-//         // }
+        // }
 
-//     }
-// }
+    }
+}
 
 // def getBuildTasks(def buildYaml = "build.yaml") {
 //     try {
@@ -84,27 +83,27 @@ def call(GIT_BRANCH=null,  GIT_PROJECT=null, DOCKER_REPO=null, BUILD_SLAVE=null 
 //         throw e
 //     }
 // }
-// def gitFetch() {
-//     def gitParams = [ Depth: 1,
-//                 Timeout: 600,
-//                 Result: "",
-//                 Credential: "45ffa5c8-48bf-4c18-b40f-334bc25d0c56" 
-//                 Url: "https://github.com/storehubdeploy/"
-//               ]
+def gitFetch() {
+    def gitParams = [ Depth: 1,
+                Timeout: 600,
+                Result: "",
+                Credential: "45ffa5c8-48bf-4c18-b40f-334bc25d0c56" 
+                Url: "https://github.com/storehubdeploy/"
+              ]
 
-//     stage 'Git Fetch'
-//     log.title("Start fetching code from git project: ${GIT_PROJECT} using the docker project: ${DOCKER_REPO}")
+    stage 'Git Fetch'
+    log.title("Start fetching code from git project: ${GIT_PROJECT} using the docker project: ${DOCKER_REPO}")
 
-//     retry(3) {
-//         timeout(time: gitParams.Timeout , unit: 'SECONDS') {
-//             gitParams.Result = checkout([$class                           : 'GitSCM',
-//                                    branches                         : [[name: GIT_BRANCH]],
-//                                    doGenerateSubmoduleConfigurations: false,
-//                                    extensions                       : [[$class: 'CloneOption', noTags: true, reference: '', shallow: true, depth: gitParams.Depth]],
-//                                    submoduleCfg                     : [],
-//                                    userRemoteConfigs                : [[credentialsId: gitParams.Credential, url: gitParams.Url + GIT_PROJECT + '.git']]])
-//         }
-//     }
+    retry(3) {
+        timeout(time: gitParams.Timeout , unit: 'SECONDS') {
+            gitParams.Result = checkout([$class                           : 'GitSCM',
+                                   branches                         : [[name: GIT_BRANCH]],
+                                   doGenerateSubmoduleConfigurations: false,
+                                   extensions                       : [[$class: 'CloneOption', noTags: true, reference: '', shallow: true, depth: gitParams.Depth]],
+                                   submoduleCfg                     : [],
+                                   userRemoteConfigs                : [[credentialsId: gitParams.Credential, url: gitParams.Url + GIT_PROJECT + '.git']]])
+        }
+    }
 
-//     return gitParams.Result
-// }
+    return gitParams.Result
+}
