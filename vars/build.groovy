@@ -65,9 +65,10 @@ def startPipeline(def buildYaml = "build.yaml") {
 def getBuildTasks(def buildYaml = "build.yaml") {
     try {
         def namedTasks = [:]
+        def m_dict = getPlaceholderDictionary()
 
         def buildTemplate = readFile([file: buildYaml])
-        def yamlText = ReplaceWithRegex( buildTemplate, ~/\{\{(\w+)\}\}/, [:])
+        def yamlText = ReplaceWithRegex( buildTemplate, ~/\{\{(\w+)\}\}/, m_dict)
         def tasks = YamlParser.loadYaml(yamlText, "tasks")
 
         for (def task in tasks) {
@@ -96,6 +97,12 @@ def ReplaceWithRegex(def text, def pattern, def dict) {
         replacedText = replacedText.replace(matcher[i][0], dict.(matcher[i][1]).toString())
     }
     return replacedText
+}
+
+private Map getPlaceholderDictionary() {
+    Map m_dict = [:]
+
+    return m_dict
 }
 
 // def gitFetch() {
