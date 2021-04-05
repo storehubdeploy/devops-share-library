@@ -1,6 +1,8 @@
 import com.libs.PodTemplates
 import com.libs.log
 
+def log = new log()
+
 def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
     def label = "k8sagent-${UUID.randomUUID().toString()}"
 
