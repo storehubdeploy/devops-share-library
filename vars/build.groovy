@@ -26,41 +26,41 @@ def call(GIT_BRANCH=null,  GIT_PROJECT=null, DOCKER_REPO=null, BUILD_SLAVE=null 
             ansiColor('xterm') {
                 timeout(time: timeoutMinutes, unit: 'MINUTES') {
                     log.title("the pipeline is executed in a k8s agent " + label + "!!!")
-                    withEnv(buildEnv) {
-                        try {
-                            startPipeline(buildYaml)
-                        } catch (exp) {
-                            error "[ERROR] Program failed, please read logs..." + exp
-                        }
-                    }
+                    // withEnv(buildEnv) {
+                    //     try {
+                    //         startPipeline(buildYaml)
+                    //     } catch (exp) {
+                    //         error "[ERROR] Program failed, please read logs..." + exp
+                    //     }
+                    // }
                 }
             }
         }
     }
 }
 
-def startPipeline(def buildYaml = "build.yaml") {
-    def tasks = [:]
-    // def git = new Git()
+// def startPipeline(def buildYaml = "build.yaml") {
+//     def tasks = [:]
+//     // def git = new Git()
 
-    container('jnlp') {
-        log.title("startPipeline")
+//     container('jnlp') {
+//         log.title("startPipeline")
 
-        scmInfo = gitFetch()
+//         scmInfo = gitFetch()
 
-        // tasks = getBuildTasks(buildYaml)
+//         // tasks = getBuildTasks(buildYaml)
 
-        // for (def task : tasks) {
-        //     def newParallel = new Parallel()
-        //     if(task.kind == "Docker") {
-        //         log.title("executing docker push")
-        //         newParallel.executeBuildParallel(task)
-        //     }
+//         // for (def task : tasks) {
+//         //     def newParallel = new Parallel()
+//         //     if(task.kind == "Docker") {
+//         //         log.title("executing docker push")
+//         //         newParallel.executeBuildParallel(task)
+//         //     }
 
-        // }
+//         // }
 
-    }
-}
+//     }
+// }
 
 // def getBuildTasks(def buildYaml = "build.yaml") {
 //     try {
