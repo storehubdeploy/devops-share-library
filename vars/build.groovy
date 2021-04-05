@@ -1,10 +1,9 @@
 import com.libs.PodTemplates
 import com.libs.Log
 
-def log = new Log()
-
 def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
     def label = "k8sagent-${UUID.randomUUID().toString()}"
+    def log = new Log()
 
     // Generate podTemplate
     // https://plugins.jenkins.io/kubernetes/
