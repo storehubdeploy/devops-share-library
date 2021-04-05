@@ -1,38 +1,37 @@
 package com.libs
 
-
-
 // Color
-void red(message) {
+def red(message) {
     echo "\033[1;31m${message} \033[0m"
 }
 
-void green(message) {
+def green(message) {
     echo "\033[1;32m${message} \033[0m"
 }
 
-void blue(message) {
+def blue(message) {
     echo "\033[1;34m${message} \033[0m"
 }
 
-void yellow(message) {
+def yellow(message) {
     echo "\033[1;33m${message} \033[0m"
 }
 
 // Log
-void title(message) {
+def title(message) {
     blue ">>> ${message}"
 }
 
-void info(message) {
+def info(message) {
     green "[INFO] ${message}"
 }
 
-void warn(message) {
+def warn(message) {
     yellow "[WARN] ${message}"
 }
 
-void error(message) {
+def error(message) {
     red "[ERROR] ${message}"
 }
 
+return this
