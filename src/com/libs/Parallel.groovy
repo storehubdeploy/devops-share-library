@@ -1,4 +1,4 @@
-package com.libs.util
+package com.libs
 
 def executeBuildParallel(def obj) {
 
