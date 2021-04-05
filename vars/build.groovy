@@ -1,6 +1,6 @@
 // import com.libs.util.Parallel
 import com.libs.PodTemplates
-// import com.libs.util.YamlParser
+import com.libs.util.YamlParser
 // import com.libs.exe.Git
 
 def call(GIT_BRANCH=null,  GIT_PROJECT=null, DOCKER_REPO=null, BUILD_SLAVE=null , buildYaml = "build.yaml", timeoutMinutes = 60 ) {
