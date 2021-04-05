@@ -48,38 +48,38 @@ def startPipeline(def buildYaml = "build.yaml") {
 
         scmInfo = git.gitFetch()
 
-        tasks = getBuildTasks(buildYaml)
+        // tasks = getBuildTasks(buildYaml)
 
-        for (def task : tasks) {
-            def newParallel = new Parallel()
-            if(task.kind == "Docker") {
-                log.title("executing docker push")
-                newParallel.executeBuildParallel(task)
-            }
+        // for (def task : tasks) {
+        //     def newParallel = new Parallel()
+        //     if(task.kind == "Docker") {
+        //         log.title("executing docker push")
+        //         newParallel.executeBuildParallel(task)
+        //     }
 
-        }
+        // }
 
     }
 }
 
-def getBuildTasks(def buildYaml = "build.yaml") {
-    try {
-        def namedTasks = [:]
+// def getBuildTasks(def buildYaml = "build.yaml") {
+//     try {
+//         def namedTasks = [:]
 
-        def yamlText = readFile([file: buildYaml])
-        def tasks = YamlParser.loadYaml(yamlText, "tasks")
+//         def yamlText = readFile([file: buildYaml])
+//         def tasks = YamlParser.loadYaml(yamlText, "tasks")
 
-        for (def task in tasks) {
-            if (task.name && namedTasks.containsKey(task.name)) {
-                namedTasks[task.name] << task
-            } else if (task.name) {
-                namedTasks[task.name] = [task]
-            }
-        }
+//         for (def task in tasks) {
+//             if (task.name && namedTasks.containsKey(task.name)) {
+//                 namedTasks[task.name] << task
+//             } else if (task.name) {
+//                 namedTasks[task.name] = [task]
+//             }
+//         }
 
-        return namedTasks
-    } catch (err) {
-        log.error "BuildYaml err:$err.message()"
-        throw e
-    }
-}
+//         return namedTasks
+//     } catch (err) {
+//         log.error "BuildYaml err:$err.message()"
+//         throw e
+//     }
+// }
