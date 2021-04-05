@@ -4,7 +4,7 @@ def gitFetch() {
     def git = [ Depth: 1,
                 Timeout: 600,
                 Result: "",
-                Credential: "45ffa5c8-48bf-4c18-b40f-334bc25d0c56" 
+                Credential: "45ffa5c8-48bf-4c18-b40f-334bc25d0c56",
                 Url: "https://github.com/storehubdeploy/"
               ]
 
