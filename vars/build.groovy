@@ -25,7 +25,8 @@ def call(GIT_BRANCH=null,  GIT_PROJECT=null, DOCKER_REPO=null, BUILD_SLAVE=null 
             // https://plugins.jenkins.io/ansicolor/
             ansiColor('xterm') {
                 timeout(time: timeoutMinutes, unit: 'MINUTES') {
-                    log.title("the pipeline is executed in a k8s agent " + label + "!!!")
+                    // log.title("the pipeline is executed in a k8s agent " + label + "!!!")
+                    echo "the pipeline is executed in a k8s agent " + label + "!!!"
                     // withEnv(buildEnv) {
                     //     try {
                     //         startPipeline(buildYaml)
