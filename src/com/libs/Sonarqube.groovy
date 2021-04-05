@@ -1,4 +1,4 @@
-package com.libs.exe
+package com.libs
 
 void analyzeWithSonarQubeAndWaitForQualityGoal() {
     withSonarQubeEnv('sonarqube') {
