@@ -3,7 +3,6 @@ package com.libs
 def Create(def containers) {
     def templates = []
     containers.each { i ->
-    // for (def i:containers ) {
         i.name            = i.name            ?: ''
         i.image           = i.image           ?: ''
         i.command         = i.command         ?: 'cat'

@@ -1,6 +1,6 @@
-参数app
+DONE 参数app, branch 
 
-镜像[ "ut_agent", "docker/buildkit", ".env获得工具" ]
+DONE 镜像[ "ut_agent", "docker/buildkit", ".env获得工具" ] 
 
 qualitygate开关
 

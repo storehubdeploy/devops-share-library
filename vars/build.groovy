@@ -1,4 +1,5 @@
 import com.libs.PodTemplates
+import com.libs.log
 
 def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
     def label = "k8sagent-${UUID.randomUUID().toString()}"
@@ -10,11 +11,11 @@ def call(BUILD_SLAVE=null, timeoutMinutes = 60 ) {
     podTemplate(label: label, containers: containers, 
                 volumes: [emptyDirVolume(mountPath: '/home/jenkins', memory: true)], 
                 imagePullSecrets: [], 
-                showRawYaml: true) 
+                showRawYaml: false) 
     {
         node(label) {
             timeout(time: timeoutMinutes, unit: 'MINUTES') {
-                echo "the pipeline is executed in a k8s agent " + label + "!!!"
+                log.title("the pipeline is executed in a k8s agent " + label + "!!!")
 
             }
         }
