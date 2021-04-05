@@ -65,10 +65,9 @@ def startPipeline(def buildYaml = "build.yaml") {
 def getBuildTasks(def buildYaml = "build.yaml") {
     try {
         def namedTasks = [:]
-        def m_dict = [:]
 
-        def buildTemplate = readFile([file: buildYaml])
-        def yamlText = ReplaceWithRegex( buildTemplate, ~/\{\{(\w+)\}\}/, m_dict)
+        def yamlText = readFile([file: buildYaml])
+        // def yamlText = ReplaceWithRegex( buildTemplate, ~/\{\{(\w+)\}\}/)
         def tasks = YamlParser.loadYaml(yamlText, "tasks")
 
         for (def task in tasks) {
@@ -87,39 +86,3 @@ def getBuildTasks(def buildYaml = "build.yaml") {
 }
 
 
-
-def ReplaceWithRegex(def text, def pattern, def dict) {
-    def matcher = text =~ pattern
-    def replacedText = text
-    //echo "matcher: ${matcher}, match count: ${matcher.count}"
-    for (i in 0..<matcher.count) {
-        //echo "Replace '${matcher[i][0]}', to '${dict.(matcher[i][1]).toString()}'"
-        replacedText = replacedText.replace(matcher[i][0], dict.(matcher[i][1]).toString())
-    }
-    return replacedText
-}
-
-// def gitFetch() {
-//     def gitParams = [ Depth: 1,
-//                 Timeout: 600,
-//                 Result: "",
-//                 Credential: "45ffa5c8-48bf-4c18-b40f-334bc25d0c56",
-//                 Url: "https://github.com/storehubdeploy/"
-//               ]
-
-//     stage 'Git Fetch'
-//     log.title("Start fetching code from git project: ${GIT_PROJECT} using the docker project: ${DOCKER_REPO}")
-
-//     retry(3) {
-//         timeout(time: gitParams.Timeout , unit: 'SECONDS') {
-//             gitParams.Result = checkout([$class                           : 'GitSCM',
-//                                    branches                         : [[name: GIT_BRANCH]],
-//                                    doGenerateSubmoduleConfigurations: false,
-//                                    extensions                       : [[$class: 'CloneOption', noTags: true, reference: '', shallow: true, depth: gitParams.Depth]],
-//                                    submoduleCfg                     : [],
-//                                    userRemoteConfigs                : [[credentialsId: gitParams.Credential, url: gitParams.Url + GIT_PROJECT + '.git']]])
-//         }
-//     }
-
-//     return gitParams.Result
-// }
