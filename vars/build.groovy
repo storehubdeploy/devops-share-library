@@ -69,7 +69,9 @@ def getBuildTasks(def buildYaml = "build.yaml") {
         def namedTasks = [:]
         def m_dict = [:]
 
-        def yamlObj = YamlParser.loadYaml(buildYaml)
+        sh 'ls -al'
+        sh 'ls ${WORKSPACE}'
+        def yamlObj = YamlParser.loadYaml("${WORKSPACE}/buildYaml")
         def tasks = yamlObj["tasks"]
 
         for (def task in tasks) {
