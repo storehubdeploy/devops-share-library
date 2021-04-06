@@ -50,14 +50,16 @@ def startPipeline(def buildYaml = "build.yaml") {
 
         tasks = getBuildTasks(buildYaml)
 
-        for (def task : tasks) {
-            def newParallel = new Parallel()
-            if(task.kind == "Docker") {
-                log.title("executing docker push")
-                newParallel.executeBuildParallel(task)
-            }
+        echo(tasks) 
 
-        }
+        // for (def task : tasks) {
+        //     def newParallel = new Parallel()
+        //     if(task.kind == "Docker") {
+        //         log.title("executing docker push")
+        //         newParallel.executeBuildParallel(task)
+        //     }
+
+        // }
 
     }
 }
@@ -67,9 +69,8 @@ def getBuildTasks(def buildYaml = "build.yaml") {
         def namedTasks = [:]
         def m_dict = [:]
 
-        def buildTemplate = readFile([file: buildYaml])
-        def yamlText = ReplaceWithRegex( buildTemplate, ~/\{\{(\w+)\}\}/, m_dict)
-        def tasks = YamlParser.loadYaml(yamlText, "tasks")
+        def yamlObj = YamlParser.loadYaml(buildYaml)
+        def tasks = yamlObj["tasks"]
 
         for (def task in tasks) {
             if (task.name && namedTasks.containsKey(task.name)) {
@@ -88,13 +89,13 @@ def getBuildTasks(def buildYaml = "build.yaml") {
 
 
 
-def ReplaceWithRegex(def text, def pattern, def dict) {
-    def matcher = text =~ pattern
-    def replacedText = text
-    //echo "matcher: ${matcher}, match count: ${matcher.count}"
-    for (i in 0..<matcher.count) {
-        //echo "Replace '${matcher[i][0]}', to '${dict.(matcher[i][1]).toString()}'"
-        replacedText = replacedText.replace(matcher[i][0], dict.(matcher[i][1]).toString())
-    }
-    return replacedText
-}
+// def ReplaceWithRegex(def text, def pattern, def dict) {
+//     def matcher = text =~ pattern
+//     def replacedText = text
+//     //echo "matcher: ${matcher}, match count: ${matcher.count}"
+//     for (i in 0..<matcher.count) {
+//         //echo "Replace '${matcher[i][0]}', to '${dict.(matcher[i][1]).toString()}'"
+//         replacedText = replacedText.replace(matcher[i][0], dict.(matcher[i][1]).toString())
+//     }
+//     return replacedText
+// }
