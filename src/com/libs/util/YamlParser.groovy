@@ -8,13 +8,13 @@ public class YamlParser implements Serializable {
     private Yaml yaml;
     private def yamlObj;
 
-    public YamlParser(String yamlText) {
+    public YamlParser(String yamlPath) {
         yaml = new Yaml()
-        yamlObj = yaml.load(yamlText)
+        yamlObj = yaml.load((yamlPath as File).text)
     }
 
     public static def loadYaml(def yamlPath = "build.yaml") {
-        def parser = new YamlParser(yamlText)
+        def parser = new YamlParser(yamlPath)
         return parser.yamlObj
     }
 
