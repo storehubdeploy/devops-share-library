@@ -56,15 +56,6 @@ def startPipeline(def buildYaml = "build.yaml") {
             ["${it}" : generateStage(it)]
         }
 
-        def generateStage(job) {
-            return {
-                stage("stage: ${job}") {
-                        echo "This is ${job}."
-                        sleep 15
-                }
-            }
-        }
-
         parallel parallelStagesMap
         // tasks = getBuildTasks(buildYaml)
 
@@ -79,6 +70,15 @@ def startPipeline(def buildYaml = "build.yaml") {
 
         // }
 
+    }
+}
+
+def generateStage(job) {
+    return {
+        stage("stage: ${job}") {
+                echo "This is ${job}."
+                sleep 15
+        }
     }
 }
 
