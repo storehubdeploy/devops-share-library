@@ -48,9 +48,27 @@ def startPipeline(def buildYaml = "build.yaml") {
 
         scmInfo = git.gitFetch()
 
-        tasks = getBuildTasks(buildYaml)
+        // parallel
+        def jobs = ["JobA", "JobB", "JobC"]
 
-        echo(tasks) 
+        def parallelStagesMap = jobs.collectEntries {
+            // Dynamic generate stage
+            ["${it}" : generateStage(it)]
+        }
+
+        def generateStage(job) {
+            return {
+                stage("stage: ${job}") {
+                        echo "This is ${job}."
+                        sleep 15
+                }
+            }
+        }
+
+        parallel parallelStagesMap
+        // tasks = getBuildTasks(buildYaml)
+
+        // echo(tasks) 
 
         // for (def task : tasks) {
         //     def newParallel = new Parallel()
@@ -64,30 +82,30 @@ def startPipeline(def buildYaml = "build.yaml") {
     }
 }
 
-def getBuildTasks(def buildYaml = "build.yaml") {
-    try {
-        def namedTasks = [:]
-        def m_dict = [:]
+// def getBuildTasks(def buildYaml = "build.yaml") {
+//     try {
+//         def namedTasks = [:]
+//         def m_dict = [:]
 
-        sh 'ls -al'
-        sh 'ls ${WORKSPACE}'
-        def yamlObj = YamlParser.loadYaml("${WORKSPACE}/${buildYaml}")
-        def tasks = yamlObj["tasks"]
+//         sh 'ls -al'
+//         sh 'ls ${WORKSPACE}'
+//         def yamlObj = YamlParser.loadYaml("${WORKSPACE}/${buildYaml}")
+//         def tasks = yamlObj["tasks"]
 
-        for (def task in tasks) {
-            if (task.name && namedTasks.containsKey(task.name)) {
-                namedTasks[task.name] << task
-            } else if (task.name) {
-                namedTasks[task.name] = [task]
-            }
-        }
+//         for (def task in tasks) {
+//             if (task.name && namedTasks.containsKey(task.name)) {
+//                 namedTasks[task.name] << task
+//             } else if (task.name) {
+//                 namedTasks[task.name] = [task]
+//             }
+//         }
 
-        return namedTasks
-    } catch (err) {
-        log.error "BuildYaml err:$err.message()"
-        throw e
-    }
-}
+//         return namedTasks
+//     } catch (err) {
+//         log.error "BuildYaml err:$err.message()"
+//         throw e
+//     }
+// }
 
 
 
