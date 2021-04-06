@@ -1,56 +1,25 @@
 package com.libs.util
 
-def executeBuildParallel(def obj) {
+def parallelRun(def jobs = ["JobA", "JobB", "JobC"]) {
+    // parallel
+    def parallelStagesMap = [:]
 
-    def maxParallelBuildCount = 5
-    echo "docker will build images with ${maxParallelBuildCount} threads"
+    jobs.each { index, item ->
+        def stage_name = item.name ?: "thread_${index}"
 
-    def buildImageTasks = []
-    for (def imageTmp : obj.images) {
-        def image = imageTmp
-        buildImageTasks.add {
-            executeBuildTask()
+        parallelStagesMap[stage_name] = {
+            generateStage(item)
         }
     }
-    parallelRun("build_image", buildImageTasks, maxParallelBuildCount)
+
+    parallel parallelStagesMap
 }
 
-def executeBuildTask() {
-    echo "start"
-    sleep 30
-    echo "end"
-}
-
-def parallelRun(def taskTypePrefix,
-                def tasks,
-                def maxParallelCount) {
-    def index = 0
-    def dic = [:]
-
-    tasks.each { task ->
-        def group = index % maxParallelCount
-        def tasksInOneGroup = []
-        if (!dic.containsKey(group)) {
-            tasksInOneGroup.add(task)
-            dic.put(group, tasksInOneGroup)
-        } else {
-            dic[group].add(task)
-        }
-        index++
-    }
-
-    def runDic = [:]
-    dic.each { key, value ->
-        def mapKey = "thread_${key}"
-        runDic[mapKey] = {
-            runTask(value)
+def generateStage(def item) {
+    return {
+        stage("stage: ${item.name}") {
+            item.task
         }
     }
-    parallel runDic
 }
 
-def runTask(def taskArr) {
-    for (def task : taskArr) {
-        task()
-    }
-}

@@ -75,7 +75,7 @@ def startPipeline(def buildYaml = "build.yaml") {
 
 def generateStage(job) {
     return {
-        stage("stage: ${job}") {
+        stage("stage: xxxxx${job}") {
                 echo "This is ${job}."
                 sleep 15
         }
