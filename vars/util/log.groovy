@@ -17,7 +17,7 @@ def yellow(message) {
 
 // Log
 def title(message) {
-    blue ">>> ${message}"
+    blue "[INFO] >>> ${message}"
 }
 
 def info(message) {
