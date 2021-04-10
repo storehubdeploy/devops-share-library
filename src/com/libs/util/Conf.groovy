@@ -6,7 +6,7 @@ import groovy.json.*;
 def loadJson(file_or_string) {
     def data
 
-    if(fileExists(file_or_string.toString())){
+    if(fileExists(file_or_string)){
         data = readJSON file : file_or_string
     }else {
         data = readJSON text : file_or_string
@@ -18,7 +18,7 @@ def loadJson(file_or_string) {
 def saveJson(file_or_string, tofile_path) {
     def data
 
-    if(fileExists(file_or_string.toString())) {
+    if(fileExists(file_or_string)) {
         data = readJSON file : file_or_string
     }else {
         def jsonSlurper = new JsonSlurper(file_or_string)
@@ -38,7 +38,7 @@ def loadProperties(properties_file) {
 def loadYaml(file_or_string) {
     def data
 
-    if(file_or_string.toString().endsWith(".yml")){
+    if(fileExists(file_or_string)){
         data = readYaml file : file_or_string
     }else {
         data = readYaml text : file_or_string
