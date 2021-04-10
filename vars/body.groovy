@@ -14,9 +14,9 @@ def call(def buildYaml = "build.yaml") {
         def yamlObj = new Conf().loadYaml("${WORKSPACE}/${buildYaml}")
         echo(yamlObj)
 
-        tasks = getBuildTasks(buildYaml)
+        // tasks = getBuildTasks(buildYaml)
 
-        echo(tasks) 
+        // echo(tasks) 
 
         // for (def task : tasks) {
         //     def newParallel = new Parallel()
