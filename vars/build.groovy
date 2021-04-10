@@ -9,6 +9,9 @@ def call(GIT_BRANCH=null,  GIT_PROJECT=null, DOCKER_REPO=null, BUILD_SLAVE=null 
                     "BUILD_NUMBER=${BUILD_NUMBER}"
                    ]
     
+    def yamlObj = new Conf().loadYaml("${WORKSPACE}/${buildYaml}")
+    echo(yamlObj.name)
+
     // Generate podTemplate
     // https://plugins.jenkins.io/kubernetes/
     // Pod and container template configuration

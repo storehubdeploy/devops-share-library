@@ -7,11 +7,7 @@ def call(def buildYaml = "build.yaml") {
     def git = new Git()
 
     container('jnlp') {
-        scmInfo = git.gitFetch()
-
-        def yamlObj = new Conf().loadYaml("${WORKSPACE}/${buildYaml}")
-        echo(yamlObj.name)
-
+        gitInfo = git.gitFetch()
     }
 
 }

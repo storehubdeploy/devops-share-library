@@ -1,0 +1,77 @@
+# set env.tasks through jenkins, by default is 'all'
+# params:
+#   tasks: ["all"] which equals ["UnitTest","Artifacts","Deploy"]
+#   # tasks: ["UnitTest"]
+#   app_name:
+#   app_env:
+#   git_branch:
+
+
+# Service name
+name: helloworld
+env:
+  git_url: ""
+  kind: nodejs
+  containers:
+  # default container
+  # - name: jnlp                               
+  #   image: "jenkins/inbound-agent:4.3-4"
+  # Use them with 'agent: '
+  - name: nodejs
+    image: "node:12"
+  - name: docker-in-docker
+    image: "docker:stable-dind"
+  - name: sonar-scanner
+    image: "sonarsource/sonar-scanner-cli:latest"
+  - name: helm
+    image: "dtzar/helm-kubectl"
+
+tasks:
+  - name: UnitTest
+    parallel:
+    - name: Prepare
+      kind: bash
+      agent: nodejs
+      run: |
+        yarn && yarn build
+        yarn run test:coverage
+    - name: CodeScan
+      kind: sonarqube
+      agent: sonar-scanner
+      depends_on: Prepare
+      with:
+        args: []
+        wait-for-quality-gate: # optional, default is true
+        # -| Specifies the maximum amount of time - a non-negative number followed by one of the suffixes "m", "s" or "h", 
+        # which is considered maximum amount of time during after which an unfinished SonarQube task is considered failed.
+        quality-gate-wait-timeout: # optional, default is 1m
+  
+    # default: <- just a comment
+    #   push-on-success: true 
+    #   detect-exists-on-registry: true
+  - name: Artifacts
+    # parallel stage
+    parallel:
+    - name: Docker
+      kind: docker
+      agent: docker-in-docker
+      with:
+        name: 
+        path: "./"
+        dockerfile: dockerfile
+        # args: []
+        # pull: false
+    - name: Helm
+      kind: helm
+      agent: helm
+      with:
+        action: ["package", "push"]
+        use_template: standard-chart@latest # optional, default is it's own chart
+
+  - name: Deploy
+    kind: helm
+    agent: helm
+    with:
+      action: ["deploy"]
+
+
