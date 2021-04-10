@@ -23,6 +23,7 @@ def call(GIT_BRANCH=null,  GIT_PROJECT=null, DOCKER_REPO=null, BUILD_SLAVE=null 
             ansiColor('xterm') {
                 timeout(time: timeoutMinutes, unit: 'MINUTES') {
                     log.title("the pipeline is executed in a k8s agent " + label + "!!!")
+                    log.title("Start Pipeline")
                     withEnv(buildEnv) {
                         body(buildYaml)
                     }

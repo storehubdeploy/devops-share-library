@@ -6,29 +6,32 @@ def call(def buildYaml = "build.yaml") {
     def tasks = [:]
     def git = new Git()
 
-    container('jnlp') {
-        log.title("startPipeline")
+    stage("Prepare") {
+        container('jnlp') {
+            scmInfo = git.gitFetch()
 
-        scmInfo = git.gitFetch()
+            def yamlObj = new Conf().loadYaml("${WORKSPACE}/${buildYaml}")
+            echo(yamlObj.name)
 
-        def yamlObj = new Conf().loadYaml("${WORKSPACE}/${buildYaml}")
-        echo(yamlObj.name)
-
-        // tasks = getBuildTasks(buildYaml)
-
-        // echo(tasks) 
-
-        // for (def task : tasks) {
-        //     def newParallel = new Parallel()
-        //     if(task.kind == "Docker") {
-        //         log.title("executing docker push")
-        //         newParallel.executeBuildParallel(task)
-        //     }
-
-        // }
-
+        }
     }
 }
+
+
+
+            // tasks = getBuildTasks(buildYaml)
+
+            // echo(tasks) 
+
+            // for (def task : tasks) {
+            //     def newParallel = new Parallel()
+            //     if(task.kind == "Docker") {
+            //         log.title("executing docker push")
+            //         newParallel.executeBuildParallel(task)
+            //     }
+
+            // }
+
 
 // def getBuildTasks(def buildYaml = "build.yaml") {
 //     try {
