@@ -6,7 +6,7 @@ def call(def buildYaml = "build.yaml") {
     def tasks = [:]
     def git = new Git()
 
-    stage("Prepare") {
+    stages("Prepare") {
         container('jnlp') {
             scmInfo = git.gitFetch()
 
