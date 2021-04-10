@@ -11,9 +11,8 @@ def loadJson(file_or_string) {
     }else {
         data = readJSON text : file_or_string
     }
-    data.each {
-        println ( it.key + " = " + it.value )
-    }
+
+    return data
 }
 
 def saveJson(file_or_string, tofile_path) {
@@ -44,13 +43,10 @@ def loadYaml(file_or_string) {
     }else {
         data = readYaml text : file_or_string
     }
-    data.each {
-        println ( it.key + " = " + it.value )
-    }
+
+    return data
 }
 
 def saveYaml(data, yaml_path) {
     writeYaml file: yaml_path , data: data
 }
-
-return this;
