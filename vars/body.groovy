@@ -1,5 +1,4 @@
 import com.libs.util.Parallel
-import com.libs.util.Conf
 import com.libs.exe.Git
 
 def call(def buildYaml = "build.yaml") {
@@ -9,7 +8,6 @@ def call(def buildYaml = "build.yaml") {
     container('jnlp') {
         gitInfo = git.gitFetch()
     }
-
 }
 
 

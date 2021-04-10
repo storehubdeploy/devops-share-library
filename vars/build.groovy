@@ -1,6 +1,8 @@
 import com.libs.util.PodTemplates
+import com.libs.util.Conf
+import com.libs.util.Lint
 
-def call(GIT_BRANCH=null,  GIT_PROJECT=null, DOCKER_REPO=null, BUILD_SLAVE=null , buildYaml = "build.yaml", timeoutMinutes = 60 ) {
+def call(buildYaml = "build.yaml",  timeoutMinutes = 60 ) {
     // Init
     def label = "k8sagent-${UUID.randomUUID().toString()}"
     def buildEnv = ["GIT_BRANCH=${GIT_BRANCH}",
@@ -9,13 +11,13 @@ def call(GIT_BRANCH=null,  GIT_PROJECT=null, DOCKER_REPO=null, BUILD_SLAVE=null 
                     "BUILD_NUMBER=${BUILD_NUMBER}"
                    ]
     
-    def yamlObj = new Conf().loadYaml("${WORKSPACE}/${buildYaml}")
-    echo(yamlObj.name)
+    // Init and lint build.yaml
+    def confObj = new Conf().loadYaml("${buildYaml}")
 
     // Generate podTemplate
     // https://plugins.jenkins.io/kubernetes/
     // Pod and container template configuration
-    def containers = new PodTemplates().Create(BUILD_SLAVE)
+    def containers = new PodTemplates().Create(confObj.env.containers)
     podTemplate(label: label, containers: containers, 
                 volumes: [emptyDirVolume(mountPath: '/home/jenkins', memory: true)], 
                 imagePullSecrets: [], 
