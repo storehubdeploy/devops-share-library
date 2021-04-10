@@ -13,6 +13,7 @@ def call(buildYaml = "build.yaml",  timeoutMinutes = 60 ) {
     
     // Init and lint build.yaml
     def confObj = new Conf().loadYaml("${buildYaml}")
+    
 
     // Generate podTemplate
     // https://plugins.jenkins.io/kubernetes/
