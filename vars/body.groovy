@@ -6,15 +6,14 @@ def call(def buildYaml = "build.yaml") {
     def tasks = [:]
     def git = new Git()
 
-    stages("Prepare") {
-        container('jnlp') {
-            scmInfo = git.gitFetch()
+    container('jnlp') {
+        scmInfo = git.gitFetch()
 
-            def yamlObj = new Conf().loadYaml("${WORKSPACE}/${buildYaml}")
-            echo(yamlObj.name)
+        def yamlObj = new Conf().loadYaml("${WORKSPACE}/${buildYaml}")
+        echo(yamlObj.name)
 
-        }
     }
+
 }
 
 
