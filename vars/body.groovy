@@ -11,7 +11,7 @@ def call(def buildYaml = "build.yaml") {
 
         scmInfo = git.gitFetch()
 
-        def yamlObj = new Conf.loadYaml("${WORKSPACE}/${buildYaml}")
+        def yamlObj = new Conf().loadYaml("${WORKSPACE}/${buildYaml}")
         echo(yamlObj)
 
         tasks = getBuildTasks(buildYaml)
